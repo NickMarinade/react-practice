@@ -1,46 +1,28 @@
 import React from 'react'
-// import Radium from 'radium'
 import './Car.css'
+import Radium from 'radium'
+import PropTypes from 'prop-types'
 
 class Car extends React.Component {
 
-  componentWillReceiveProps(nextProps) {
-    console.log('Car receivepropse', nextProps)
-  }
-  
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log('Car should update', nextProps, nextState)
-    return nextProps.name.trim() !== this.props.name.trim()
+  constructor(props) {
+    super(props)
+
+    this.inputRef = React.createRef()
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    console.log('Car will update', nextProps, nextState)
-  }
-
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   console.log('car derivedStateFromProps', nextProps, prevState)
-
-  //   return prevState
-  // }
-
-  componentDidUpdate() {
-    console.log('Car did update')
-  }
-
-  // getSnapshotBeforeUpdate() {
-  //   console.log('car getSnapshotBeforeUpdate ')
-  // }
-
-  componentWillUnmount() {
-    console.log('car will unmount')
+  componentDidMount() {
+    if (this.props.index === 1) {
+    this.inputRef.current.focus()
+    }
   }
 
   render() {
     console.log('car render')
 
-    if (Math.random() > 0.7) {
-      throw new Error('Car random failed')
-    }
+    // if (Math.random() > 0.7) {
+    //   throw new Error('Car random failed')
+    // }
 
     const inputClasses = ["input"];
 
@@ -70,6 +52,7 @@ class Car extends React.Component {
           Year: <strong>{this.props.year}</strong>
         </p>
         <input
+          ref={this.inputRef}
           type="text"
           onChange={this.props.onChangeName}
           value={this.props.name}
@@ -81,4 +64,12 @@ class Car extends React.Component {
   }
 }
 
-export default Car
+Car.propTypes = {
+  name: PropTypes.string.isRequired,
+  year: PropTypes.number,
+  index: PropTypes.number,
+  onChangeName: PropTypes.func,
+  onDelete: PropTypes.func
+}
+
+export default Radium(Car)
